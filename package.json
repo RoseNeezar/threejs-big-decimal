@@ -2,7 +2,7 @@
   "name": "@threejs/root",
   "private": true,
   "scripts": {
-    "start": "lerna run --scope @threejs/* --parallel start",
+    "start": "lerna run --scope @threejs/* --parallel dev",
     "build": "lerna run --scope @threejs/* --parallel build",
     "serve": "lerna run --scope @threejs/* --parallel serve",
     "clean": "lerna run --scope @threejs/* --parallel clean",
@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
