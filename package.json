@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "start": "lerna run --scope @threejs/* --parallel dev",
+    "start:basic": "lerna run --scope @threejs/basics --parallel dev",
+    "start:rtf": "lerna run --scope @threejs/rtf --parallel dev",
     "build": "lerna run --scope @threejs/* --parallel build",
     "serve": "lerna run --scope @threejs/* --parallel serve",
     "clean": "lerna run --scope @threejs/* --parallel clean",
