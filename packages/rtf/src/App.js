@@ -1,43 +1,60 @@
 import logo from "./logo.svg";
 import "./App.css";
-import * as THREE from "three";
+import { Canvas, useFrame, useThree, extend } from "react-three-fiber";
+import { useRef } from "react";
+import { OrbitControls } from "@react-three/drei";
+
+const Box = (props) => {
+  const ref = useRef();
+  useFrame((state) => {
+    ref.current.rotation.x += 0.01;
+    ref.current.rotation.y += 0.01;
+  });
+
+  return (
+    <mesh ref={ref} {...props} castShadow receiveShadow>
+      <boxBufferGeometry />
+      <meshPhysicalMaterial color="blue" />
+    </mesh>
+  );
+};
+
+const Floor = (props) => {
+  return (
+    <mesh {...props} receiveShadow>
+      <boxBufferGeometry args={[20, 1, 10]} />
+      <meshPhysicalMaterial />
+    </mesh>
+  );
+};
+
+const Bulb = (props) => {
+  return (
+    <mesh {...props}>
+      <pointLight castShadow />
+      <sphereBufferGeometry args={[0.2, 20, 20]} />
+      <meshPhongMaterial emissive="yellow" />
+    </mesh>
+  );
+};
 
 function App() {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
+  return (
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <Canvas
+        shadows="true"
+        style={{ background: "black" }}
+        camera={{ position: [3, 3, 3] }}
+      >
+        <ambientLight intensity={0.2} />
+        <Bulb position={[0, 3, 0]} />
+        <OrbitControls />
+        <axesHelper args={[5]} />
+        <Box position={[0, 1, 0]} />
+        <Floor position={[0, -0.5, 0]} />
+      </Canvas>
+    </div>
   );
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.innerHTML = "";
-  document.body.appendChild(renderer.domElement);
-
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({
-    color: "blue",
-  });
-  camera.position.z = 5;
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
-
-  function animate() {
-    requestAnimationFrame(animate);
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    renderer.render(scene, camera);
-  }
-
-  window.addEventListener("resize", () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
-
-  animate();
-  return null;
 }
 
 export default App;
